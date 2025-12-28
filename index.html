@@ -4,217 +4,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal 83 Tiêu chí BYT - Digital Phụ lục 3</title>
+    <title>83 Tiêu chí BYT - Portal Vũ Quang Cường</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
-            --bg: #05070a;
-            --card: #111827;
+            --bg: #030712;
+            --card: #0f172a;
             --primary: #3b82f6;
         }
 
         body {
             background: var(--bg);
-            color: #e2e8f0;
+            color: #f8fafc;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             margin: 0;
         }
 
-        .header-ds {
-            height: 70px;
-            background: var(--card);
-            border-bottom: 1px solid #1f2937;
+        header {
+            height: 75px;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid #1e293b;
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            gap: 30px;
+            padding: 0 40px;
+            z-index: 1000;
+            position: relative;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
         }
 
-        .energy-bar {
-            flex-grow: 1;
-            height: 6px;
-            background: #1f2937;
-            border-radius: 3px;
-        }
-
-        #energy-fill {
+        /* Mega Menu Centered */
+        .mega-nav {
+            display: flex;
+            gap: 10px;
             height: 100%;
-            width: 0%;
-            background: var(--primary);
-            border-radius: 3px;
-            transition: 1s;
-            box-shadow: 0 0 10px var(--primary);
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-item {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 15px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #94a3b8;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mega-content {
+            position: fixed;
+            top: 75px;
+            left: 0;
+            width: 100vw;
+            background: #0f172a;
+            border-bottom: 3px solid var(--primary);
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 35px;
+            gap: 25px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .nav-item:hover .mega-content {
+            display: grid;
+        }
+
+        .mega-chapter h4 {
+            font-size: 10px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .mega-item {
+            font-size: 10px;
+            padding: 8px 0;
+            color: #64748b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            transition: 0.2s;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .mega-item:hover {
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.08);
+            padding-left: 8px;
+            border-radius: 4px;
         }
 
         .main-container {
             display: grid;
-            grid-template-columns: 450px 1fr;
-            height: calc(100vh - 70px);
+            grid-template-columns: 480px 1fr;
+            height: calc(100vh - 75px);
         }
 
         #info-panel {
-            background: #0f172a;
+            background: #0b1120;
             border-right: 1px solid #1e293b;
-            padding: 20px;
+            padding: 35px;
             overflow-y: auto;
-        }
-
-        .phuluc-card {
-            background: #1e293b;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-
-        .phuluc-card.active {
-            border-color: var(--primary);
-            background: #161e31;
-        }
-
-        .level-tag {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-            color: white;
-        }
-
-        .lvl-1 {
-            background: #ef4444;
-        }
-
-        .lvl-2 {
-            background: #f97316;
-        }
-
-        .lvl-3 {
-            background: #eab308;
-        }
-
-        .lvl-4 {
-            background: #22c55e;
-        }
-
-        .lvl-5 {
-            background: #06b6d4;
-        }
-
-        .appendix-content {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #334155;
-            font-size: 12px;
-        }
-
-        .phuluc-card.active .appendix-content {
-            display: block;
-        }
-
-        #hospital-frame {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-            overflow: hidden;
         }
 
         .hotspot {
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            border: 2px solid #fff;
+            border: 4px solid #fff;
             transform: translate(-50%, -50%);
             cursor: pointer;
-            z-index: 100;
+            z-index: 500;
+            animation: pulse-mega 2.5s infinite;
+            background: var(--primary);
         }
 
-        #connection-svg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 50;
+        @keyframes pulse-mega {
+            0% {
+                box-shadow: 0 0 0 0px rgba(59, 130, 246, 0.7);
+            }
+
+            100% {
+                box-shadow: 0 0 0 45px rgba(59, 130, 246, 0);
+            }
+        }
+
+        .contact-info {
+            position: absolute;
+            bottom: 35px;
+            right: 35px;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            backdrop-filter: blur(12px);
+            z-index: 800;
         }
     </style>
 </head>
 
 <body>
-    <svg id="connection-svg">
-        <path id="connector-line" d="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,3" />
-    </svg>
-    <div class="header-ds">
-        <div>
-            <h1 class="text-sm font-black text-blue-500 uppercase">Hệ thống 83 Tiêu chí</h1>
-            <p class="text-[9px] opacity-50 italic">Digital Phụ lục 3 BYT</p>
+    <header>
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-black">83</div>
+            <div>
+                <h1 class="text-xs font-black uppercase leading-none text-white">Chất lượng Bệnh viện</h1>
+                <p class="text-[9px] text-blue-500 font-bold uppercase tracking-widest mt-1">Vũ Quang Cường Portal</p>
+            </div>
         </div>
-        <div class="energy-bar">
-            <div id="energy-fill"></div>
-        </div>
+        <nav class="mega-nav" id="mega-nav-container"></nav>
         <div class="text-right">
-            <p class="text-[9px] opacity-50 uppercase">AVG Viện</p>
-            <p id="total-avg" class="text-xl font-black">0.00</p>
+            <p class="text-[8px] opacity-40 font-black uppercase">AVG Hệ thống</p>
+            <div class="flex items-center gap-3">
+                <span id="total-avg" class="text-xl font-black text-blue-500">0.00</span>
+                <div class="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div id="energy-fill" class="h-full bg-blue-500 w-0 transition-all duration-1000"></div>
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
+
     <div class="main-container">
         <aside id="info-panel">
-            <div id="welcome" class="text-center opacity-30 mt-20"><i class="fas fa-file-medical text-5xl mb-4"></i>
-                <p>Chọn khoa phòng để xem phiếu đánh giá</p>
+            <div id="welcome" class="text-center py-48 opacity-10"><i class="fas fa-database text-8xl mb-6"></i>
+                <p class="text-[11px] font-black uppercase tracking-widest">Đang kết nối dữ liệu...</p>
             </div>
-            <div id="panel-data" class="hidden">
-                <div class="flex justify-between items-end mb-4">
-                    <h2 id="room-title" class="text-lg font-bold text-white uppercase"></h2>
-                    <div id="room-avg" class="text-blue-400 font-bold"></div>
-                </div>
-                <div id="criteria-list"></div>
+            <div id="appendix-view" class="hidden">
+                <div id="appendix-content"></div>
             </div>
         </aside>
         <main id="hospital-frame">
             <div id="layout-wrapper" class="relative">
-                <img src="./images/layout_Tang1.png" id="hospital-map" class="max-h-[85vh]">
+                <img src="./images/layout_Tang1.png" id="hospital-map" class="max-h-[82vh] object-contain">
                 <div id="hotspot-container"></div>
+            </div>
+            <div class="contact-info">
+                <p class="text-[9px] text-blue-500 font-black uppercase tracking-widest mb-1">Chuyên gia Quản lý Chất
+                    lượng</p>
+                <p class="text-[14px] font-black text-white">Vũ Quang Cường</p>
+                <p class="text-[11px] text-slate-400 font-semibold"><i
+                        class="fas fa-phone-alt mr-2 text-blue-500"></i>0912.580.018</p>
             </div>
         </main>
     </div>
 
     <script>
-        // BƯỚC QUAN TRỌNG: THAY LINK CỦA BẠN VÀO ĐÂY
         const API_URL = "https://script.google.com/macros/s/AKfycby38k-cbBIZv4M0NVa29lWzKpeDzHavkFdbuJ3i0wJhNh0rS6cPh6k_UqOGB9_ImzoD/exec";
-
         let masterData = {};
-        let activeRoom = null;
 
         async function init() {
             try {
                 const res = await fetch(API_URL);
-                if (!res.ok) throw new Error("Network response was not ok");
                 masterData = await res.json();
-
-                let total = 0, count = 0, roomCount = 0;
-                for (let k in masterData) {
-                    total += parseFloat(masterData[k].stats.avg);
-                    roomCount++;
-                }
-                const avg = (total / roomCount || 0).toFixed(2);
-                document.getElementById('total-avg').innerText = avg;
-                document.getElementById('energy-fill').style.width = (avg / 5 * 100) + "%";
+                renderDashboard();
+                renderMegaMenu();
                 renderHotspots();
-            } catch (e) {
-                console.error("Lỗi nạp dữ liệu: ", e);
-                alert("Không thể nạp dữ liệu từ Google Sheets. Hãy kiểm tra lại link Web App và quyền truy cập.");
+            } catch (e) { document.getElementById('welcome').innerHTML = "Lỗi nạp dữ liệu!"; }
+        }
+
+        function renderMegaMenu() {
+            const nav = document.getElementById('mega-nav-container');
+            const sections = [
+                { id: 'A', name: 'NGƯỜI BỆNH', icon: 'fa-user-injured' },
+                { id: 'B', name: 'NHÂN LỰC', icon: 'fa-id-card-alt' },
+                { id: 'C', name: 'CHUYÊN MÔN', icon: 'fa-hospital-user' },
+                { id: 'D', name: 'CẢI TIẾN', icon: 'fa-chart-pie' },
+                { id: 'E', name: 'ĐẶC THÙ', icon: 'fa-hand-holding-heart' }
+            ];
+
+            nav.innerHTML = sections.map(sec => `
+                <div class="nav-item">
+                    <i class="fas ${sec.icon} mr-2 text-blue-500"></i> PHẦN ${sec.id}
+                    <div class="mega-content" id="mega-${sec.id}"></div>
+                </div>
+            `).join('');
+
+            // Tự động phân loại tiêu chí vào Mega Menu
+            for (let room in masterData) {
+                masterData[room].standards.forEach(s => {
+                    const secChar = s.section.charAt(5);
+                    const megaBox = document.getElementById(`mega-${secChar}`);
+                    if (!megaBox) return;
+
+                    let chapDiv = megaBox.querySelector(`[data-chap="${s.chapter}"]`);
+                    if (!chapDiv) {
+                        chapDiv = document.createElement('div');
+                        chapDiv.className = 'mega-chapter';
+                        chapDiv.setAttribute('data-chap', s.chapter);
+                        chapDiv.innerHTML = `<h4>${s.chapter}</h4><div class="item-list"></div>`;
+                        megaBox.appendChild(chapDiv);
+                    }
+
+                    const item = document.createElement('div');
+                    item.className = 'mega-item';
+                    item.innerHTML = `<b>${s.code}</b>: ${s.name}`;
+                    item.onclick = (e) => { e.stopPropagation(); selectCriterion(room, s.code); };
+                    chapDiv.querySelector('.item-list').appendChild(item);
+                });
             }
+        }
+
+        function renderDashboard() {
+            let total = 0, count = 0;
+            for (let k in masterData) { total += parseFloat(masterData[k].stats.avg); count++; }
+            const avg = (total / count || 0).toFixed(2);
+            document.getElementById('total-avg').innerText = avg;
+            document.getElementById('energy-fill').style.width = (avg / 5 * 100) + "%";
         }
 
         function renderHotspots() {
@@ -223,57 +280,29 @@
             for (let id in masterData) {
                 const room = masterData[id];
                 const dot = document.createElement('div');
-                dot.className = `hotspot lvl-${Math.round(room.stats.avg)}`;
-                dot.style.left = room.posX + "%";
-                dot.style.top = room.posY + "%";
-                dot.onclick = () => showInfo(id);
-                dot.id = `hot-` + id;
+                dot.className = 'hotspot';
+                dot.style.left = room.posX + "%"; dot.style.top = room.posY + "%";
+                dot.onclick = () => selectCriterion(id, room.standards[0].code);
                 container.appendChild(dot);
             }
         }
 
-        function showInfo(id) {
-            activeRoom = id;
+        function selectCriterion(roomId, code) {
+            const s = masterData[roomId].standards.find(st => st.code === code);
             document.getElementById('welcome').classList.add('hidden');
-            document.getElementById('panel-data').classList.remove('hidden');
-            const room = masterData[id];
-            document.getElementById('room-title').innerText = room.title;
-            document.getElementById('room-avg').innerText = "AVG: " + room.stats.avg;
-
-            document.getElementById('criteria-list').innerHTML = room.standards.map((s, i) => `
-                <div class="phuluc-card" id="item-${i}" onclick="activate(${i})">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[10px] font-bold text-blue-400">${s.code}</span>
-                        <div class="level-tag lvl-${s.level}">${s.level}</div>
-                    </div>
-                    <h3 class="text-xs font-bold leading-snug">${s.name}</h3>
-                    <div class="appendix-content">
-                        <p class="text-[10px] text-blue-400 font-bold uppercase">1. Thực trạng:</p>
-                        <p class="mb-2 text-slate-300 italic">${s.desc || 'Chưa cập nhật'}</p>
-                        <p class="text-[10px] text-blue-400 font-bold uppercase">2. Giải trình:</p>
-                        <p class="mb-2">${s.reason || 'N/A'}</p>
-                        <p class="text-[9px] opacity-50 mt-2">Người chấm: ${s.staff}</p>
-                    </div>
+            document.getElementById('appendix-view').classList.remove('hidden');
+            document.getElementById('appendix-content').innerHTML = `
+                <div class="bg-blue-600/20 p-5 rounded-2xl mb-8 border border-blue-500/30">
+                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Phiếu đánh giá chuẩn</p>
+                    <h2 class="text-3xl font-black text-white">TIÊU CHÍ ${s.code}</h2>
                 </div>
-            `).join('');
-            activate(0);
+                <h3 class="text-white font-black text-[15px] mb-8 uppercase leading-tight">${s.name}</h3>
+                <div class="space-y-8 text-[12px] leading-relaxed">
+                    <div><b class="text-blue-500 uppercase text-[10px] block mb-2 tracking-widest">Thực trạng đánh giá</b><p class="text-slate-200 italic bg-black/40 p-5 rounded-xl border-l-4 border-blue-600">${s.desc || 'N/A'}</p></div>
+                    <div><b class="text-blue-500 uppercase text-[10px] block mb-2 tracking-widest">Giải trình xếp mức</b><p class="text-slate-400">${s.reason || 'N/A'}</p></div>
+                </div>
+            `;
         }
-
-        function activate(idx) {
-            document.querySelectorAll('.phuluc-card').forEach(c => c.classList.remove('active'));
-            const el = document.getElementById(`item-${idx}`);
-            if (el) el.classList.add('active');
-
-            const h = document.getElementById(`hot-` + activeRoom);
-            const a = document.getElementById(`item-${idx}`);
-            const line = document.getElementById('connector-line');
-            if (!h || !a) return;
-            const hr = h.getBoundingClientRect(); const ar = a.getBoundingClientRect();
-            const x1 = ar.right; const y1 = ar.top + 20;
-            const x2 = hr.left + 9; const y2 = hr.top + 9;
-            line.setAttribute('d', `M ${x1} ${y1} L ${x1 + 30} ${y1} L ${x1 + 30} ${y2} L ${x2} ${y2}`);
-        }
-
         window.onload = init;
     </script>
 </body>
