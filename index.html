@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Quản lý Chất lượng 83 Tiêu chí BYT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0b0f1a;
+            --text: #f1f5f9;
+            --card: #161d2f;
+            --lvl1: #ef4444;
+            --lvl2: #f97316;
+            --lvl3: #eab308;
+            --lvl4: #22c55e;
+            --lvl5: #06b6d4;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            height: 80px;
+            background: var(--card);
+            border-bottom: 2px solid #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            gap: 3rem;
+        }
+
+        .stat-card {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            height: calc(100vh - 80px);
+        }
+
+        /* Menu tiêu chí */
+        #info-panel {
+            background: var(--card);
+            border-right: 1px solid #1e293b;
+            padding: 1.5rem;
+            overflow-y: auto;
+            z-index: 20;
+        }
+
+        .criteria-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .level-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .lvl-1 {
+            background: var(--lvl1);
+        }
+
+        .lvl-2 {
+            background: var(--lvl2);
+        }
+
+        .lvl-3 {
+            background: var(--lvl3);
+        }
+
+        .lvl-4 {
+            background: var(--lvl4);
+        }
+
+        .lvl-5 {
+            background: var(--lvl5);
+        }
+
+        /* Map & Line */
+        #hospital-frame {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #05070a;
+            overflow: hidden;
+        }
+
+        #layout-wrapper {
+            position: relative;
+        }
+
+        #hospital-map {
+            max-height: calc(100vh - 120px);
+            object-fit: contain;
+        }
+
+        #connection-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .hotspot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .jci-anchor {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateX(50%);
+            display: none;
+        }
+
+        .criteria-item.active .jci-anchor {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="connection-svg">
+        <path id="connector-line" d="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,4" />
+    </svg>
+
+    <div class="dashboard-header">
+        <div>
+            <h1 class="text-xl font-bold text-blue-400">83 TIÊU CHÍ BỘ Y TẾ</h1>
+            <p class="text-xs opacity-50 uppercase tracking-widest">Hệ thống giám sát chất lượng</p>
+        </div>
+        <div class="stat-card">
+            <p class="text-[10px] uppercase opacity-60">Điểm trung bình viện</p>
+            <p id="total-avg" class="text-2xl font-black text-white">0.00</p>
+        </div>
+        <div class="stat-card">
+            <p class="text-[10px] uppercase opacity-60">Tiêu chí đã đánh giá</p>
+            <p id="total-count" class="text-2xl font-black text-white">0/83</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside id="info-panel">
+            <div id="welcome-msg" class="text-center py-10 opacity-40">
+                <i class="fas fa-hospital-alt text-5xl mb-4"></i>
+                <p>Chọn khu vực trên sơ đồ để xem điểm 83 tiêu chí</p>
+            </div>
+            <div id="panel-data" class="hidden">
+                <div class="flex justify-between items-end mb-6 border-b border-slate-700 pb-2">
+                    <h2 id="room-title" class="text-2xl font-bold text-white uppercase"></h2>
+                    <p class="text-blue-400 font-bold">AVG: <span id="room-avg">0</span></p>
+                </div>
+                <div id="criteria-list"></div>
+            </div>
+        </aside>
+
+        <main id="hospital-frame">
+            <div id="layout-wrapper">
+                <img src="./images/layout_Tang1.png" id="hospital-map" alt="Hospital Map">
+                <div id="hotspot-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycby38k-cbBIZv4M0NVa29lWzKpeDzHavkFdbuJ3i0wJhNh0rS6cPh6k_UqOGB9_ImzoD/exec";
+        let masterData = {};
+        let activeRoomId = null;
+
+        async function init() {
+            try {
+                const res = await fetch(API_URL);
+                masterData = await res.json();
+                renderDashboard();
+                renderHotspots();
+            } catch (e) { alert("Lỗi kết nối dữ liệu!"); }
+        }
+
+        function renderDashboard() {
+            let totalAvg = 0, count = 0, rooms = 0;
+            for (let room in masterData) {
+                totalAvg += parseFloat(masterData[room].stats.avg);
+                count += masterData[room].stats.count;
+                rooms++;
+            }
+            document.getElementById('total-avg').innerText = (totalAvg / rooms || 0).toFixed(2);
+            document.getElementById('total-count').innerText = count + "/83";
+        }
+
+        function renderHotspots() {
+            const container = document.getElementById('hotspot-container');
+            container.innerHTML = '';
+            for (let id in masterData) {
+                const room = masterData[id];
+                const dot = document.createElement('div');
+                dot.className = `hotspot lvl-${Math.round(room.stats.avg)}`;
+                dot.style.left = room.posX + "%"; dot.style.top = room.posY + "%";
+                dot.id = `hotspot-${id}`;
+                dot.onclick = () => showRoomInfo(id);
+                container.appendChild(dot);
+            }
+        }
+
+        function showRoomInfo(id) {
+            activeRoomId = id;
+            const room = masterData[id];
+            document.getElementById('welcome-msg').classList.add('hidden');
+            document.getElementById('panel-data').classList.remove('hidden');
+            document.getElementById('room-title').innerText = room.title;
+            document.getElementById('room-avg').innerText = room.stats.avg;
+
+            const list = document.getElementById('criteria-list');
+            list.innerHTML = room.standards.map((s, i) => `
+                <div class="criteria-item p-4" id="item-${i}">
+                    <div class="jci-anchor" id="anchor-${i}"></div>
+                    <div class="flex gap-4 items-start">
+                        <div class="level-badge lvl-${s.level}">${s.level}</div>
+                        <div>
+                            <p class="text-[10px] text-blue-400 font-bold">${s.code} - Chương ${s.section}</p>
+                            <h3 class="text-sm font-semibold">${s.name}</h3>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            setTimeout(() => drawLine(0), 200);
+        }
+
+        function drawLine(index) {
+            const hotspot = document.getElementById(`hotspot-${activeRoomId}`);
+            const anchor = document.getElementById(`anchor-${index}`);
+            const line = document.getElementById('connector-line');
+            if (!hotspot || !anchor) return;
+
+            const hRect = hotspot.getBoundingClientRect();
+            const aRect = anchor.getBoundingClientRect();
+            const x1 = aRect.left + aRect.width / 2; const y1 = aRect.top + aRect.height / 2;
+            const x2 = hRect.left + hRect.width / 2; const y2 = hRect.top + hRect.height / 2;
+
+            line.setAttribute('d', `M ${x1} ${y1} L ${x1 + (x2 - x1) * 0.2} ${y1} L ${x1 + (x2 - x1) * 0.2} ${y2} L ${x2} ${y2}`);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+
+</html>
