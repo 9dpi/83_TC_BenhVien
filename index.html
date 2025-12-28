@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Quản lý Chất lượng 83 Tiêu chí BYT</title>
+    <title>Portal 83 Tiêu chí BYT - Accurate Connector</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -25,9 +25,9 @@
             font-family: 'Segoe UI', sans-serif;
             height: 100vh;
             overflow: hidden;
+            margin: 0;
         }
 
-        /* Dashboard Header */
         .dashboard-header {
             height: 80px;
             background: var(--card);
@@ -36,6 +36,8 @@
             align-items: center;
             padding: 0 2rem;
             gap: 3rem;
+            position: relative;
+            z-index: 100;
         }
 
         .stat-card {
@@ -47,15 +49,16 @@
             display: grid;
             grid-template-columns: 400px 1fr;
             height: calc(100vh - 80px);
+            position: relative;
         }
 
-        /* Menu tiêu chí */
         #info-panel {
             background: var(--card);
             border-right: 1px solid #1e293b;
             padding: 1.5rem;
             overflow-y: auto;
             z-index: 20;
+            position: relative;
         }
 
         .criteria-item {
@@ -64,17 +67,24 @@
             border-radius: 8px;
             margin-bottom: 12px;
             position: relative;
+            transition: 0.3s;
+        }
+
+        .criteria-item.active {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
         }
 
         .level-badge {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             font-size: 14px;
+            color: white;
         }
 
         .lvl-1 {
@@ -97,7 +107,6 @@
             background: var(--lvl5);
         }
 
-        /* Map & Line */
         #hospital-frame {
             position: relative;
             display: flex;
@@ -109,44 +118,49 @@
 
         #layout-wrapper {
             position: relative;
+            line-height: 0;
         }
 
         #hospital-map {
             max-height: calc(100vh - 120px);
+            width: auto;
             object-fit: contain;
         }
 
+        /* SVG bao phủ toàn bộ container chính để vẽ line xuyên thấu */
         #connection-svg {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
-            z-index: 5;
+            z-index: 50;
         }
 
         .hotspot {
             position: absolute;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 2px solid #fff;
             transform: translate(-50%, -50%);
             cursor: pointer;
-            z-index: 10;
+            z-index: 60;
         }
 
+        /* Điểm neo xuất hiện ở mép phải của mỗi item trong panel */
         .jci-anchor {
             position: absolute;
             right: 0;
-            top: 20px;
-            width: 8px;
-            height: 8px;
-            background: #fff;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
             border-radius: 50%;
-            transform: translateX(50%);
+            transform: translate(50%, -50%);
             display: none;
+            box-shadow: 0 0 10px var(--primary);
         }
 
         .criteria-item.active .jci-anchor {
@@ -157,42 +171,46 @@
 
 <body>
     <svg id="connection-svg">
-        <path id="connector-line" d="" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,4" />
+        <path id="connector-line" d="" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6,4"
+            stroke-linecap="round" />
     </svg>
 
     <div class="dashboard-header">
         <div>
             <h1 class="text-xl font-bold text-blue-400">83 TIÊU CHÍ BỘ Y TẾ</h1>
-            <p class="text-xs opacity-50 uppercase tracking-widest">Hệ thống giám sát chất lượng</p>
+            <p class="text-[10px] opacity-50 uppercase tracking-widest">Hệ thống giám sát chất lượng thời gian thực</p>
         </div>
         <div class="stat-card">
-            <p class="text-[10px] uppercase opacity-60">Điểm trung bình viện</p>
+            <p class="text-[10px] uppercase opacity-60">Điểm AVG Viện</p>
             <p id="total-avg" class="text-2xl font-black text-white">0.00</p>
         </div>
         <div class="stat-card">
-            <p class="text-[10px] uppercase opacity-60">Tiêu chí đã đánh giá</p>
+            <p class="text-[10px] uppercase opacity-60">Đã đánh giá</p>
             <p id="total-count" class="text-2xl font-black text-white">0/83</p>
         </div>
     </div>
 
     <div class="main-container">
         <aside id="info-panel">
-            <div id="welcome-msg" class="text-center py-10 opacity-40">
-                <i class="fas fa-hospital-alt text-5xl mb-4"></i>
-                <p>Chọn khu vực trên sơ đồ để xem điểm 83 tiêu chí</p>
+            <div id="welcome-msg" class="text-center py-20 opacity-30">
+                <i class="fas fa-map-marked-alt text-6xl mb-4"></i>
+                <p class="text-sm">Vui lòng chọn một điểm trên sơ đồ</p>
             </div>
             <div id="panel-data" class="hidden">
                 <div class="flex justify-between items-end mb-6 border-b border-slate-700 pb-2">
-                    <h2 id="room-title" class="text-2xl font-bold text-white uppercase"></h2>
-                    <p class="text-blue-400 font-bold">AVG: <span id="room-avg">0</span></p>
+                    <h2 id="room-title" class="text-xl font-bold text-white uppercase truncate pr-4"></h2>
+                    <div class="text-right shrink-0">
+                        <p class="text-[10px] opacity-50 uppercase">Phòng AVG</p>
+                        <p id="room-avg" class="text-xl font-bold text-blue-400 leading-none"></p>
+                    </div>
                 </div>
-                <div id="criteria-list"></div>
+                <div id="criteria-list" class="space-y-3"></div>
             </div>
         </aside>
 
         <main id="hospital-frame">
             <div id="layout-wrapper">
-                <img src="./images/layout_Tang1.png" id="hospital-map" alt="Hospital Map">
+                <img src="./images/layout_Tang1.png" id="hospital-map" alt="Map">
                 <div id="hotspot-container"></div>
             </div>
         </main>
@@ -209,7 +227,7 @@
                 masterData = await res.json();
                 renderDashboard();
                 renderHotspots();
-            } catch (e) { alert("Lỗi kết nối dữ liệu!"); }
+            } catch (e) { console.error("Data error:", e); }
         }
 
         function renderDashboard() {
@@ -229,8 +247,11 @@
             for (let id in masterData) {
                 const room = masterData[id];
                 const dot = document.createElement('div');
-                dot.className = `hotspot lvl-${Math.round(room.stats.avg)}`;
-                dot.style.left = room.posX + "%"; dot.style.top = room.posY + "%";
+                // Màu sắc hotspot dựa trên điểm AVG
+                const avgNum = Math.round(room.stats.avg);
+                dot.className = `hotspot lvl-${avgNum}`;
+                dot.style.left = room.posX + "%";
+                dot.style.top = room.posY + "%";
                 dot.id = `hotspot-${id}`;
                 dot.onclick = () => showRoomInfo(id);
                 container.appendChild(dot);
@@ -247,19 +268,30 @@
 
             const list = document.getElementById('criteria-list');
             list.innerHTML = room.standards.map((s, i) => `
-                <div class="criteria-item p-4" id="item-${i}">
+                <div class="criteria-item p-3 cursor-pointer" id="item-${i}" onclick="activateItem(${i})">
                     <div class="jci-anchor" id="anchor-${i}"></div>
-                    <div class="flex gap-4 items-start">
+                    <div class="flex gap-3 items-center">
                         <div class="level-badge lvl-${s.level}">${s.level}</div>
-                        <div>
-                            <p class="text-[10px] text-blue-400 font-bold">${s.code} - Chương ${s.section}</p>
-                            <h3 class="text-sm font-semibold">${s.name}</h3>
+                        <div class="overflow-hidden">
+                            <p class="text-[9px] text-blue-400 font-bold leading-none mb-1">${s.code}</p>
+                            <h3 class="text-xs font-medium leading-tight text-slate-200 truncate">${s.name}</h3>
                         </div>
                     </div>
                 </div>
             `).join('');
 
-            setTimeout(() => drawLine(0), 200);
+            // Tự động kích hoạt mục đầu tiên
+            activateItem(0);
+        }
+
+        function activateItem(index) {
+            document.querySelectorAll('.criteria-item').forEach(el => el.classList.remove('active'));
+            const item = document.getElementById(`item-${index}`);
+            if (item) {
+                item.classList.add('active');
+                // Đợi render hoàn tất rồi vẽ line
+                requestAnimationFrame(() => drawLine(index));
+            }
         }
 
         function drawLine(index) {
@@ -270,11 +302,37 @@
 
             const hRect = hotspot.getBoundingClientRect();
             const aRect = anchor.getBoundingClientRect();
-            const x1 = aRect.left + aRect.width / 2; const y1 = aRect.top + aRect.height / 2;
-            const x2 = hRect.left + hRect.width / 2; const y2 = hRect.top + hRect.height / 2;
 
-            line.setAttribute('d', `M ${x1} ${y1} L ${x1 + (x2 - x1) * 0.2} ${y1} L ${x1 + (x2 - x1) * 0.2} ${y2} L ${x2} ${y2}`);
+            // Tọa độ tâm hotspot
+            const hX = hRect.left + hRect.width / 2;
+            const hY = hRect.top + hRect.height / 2;
+
+            // Tọa độ tâm anchor (điểm neo bên phải item)
+            const aX = aRect.left + aRect.width / 2;
+            const aY = aRect.top + aRect.height / 2;
+
+            // Vẽ đường gấp khúc mượt mà
+            // 1. Từ Anchor sang phải 20px
+            // 2. Chạy thẳng đứng tới cao độ Hotspot
+            // 3. Chạy ngang vào Hotspot
+            const bendX = aX + 30;
+
+            const pathData = `M ${aX} ${aY} L ${bendX} ${aY} L ${bendX} ${hY} L ${hX} ${hY}`;
+
+            line.setAttribute('d', pathData);
+            line.style.opacity = "1";
         }
+
+        // Cập nhật đường kẻ khi cuộn panel hoặc resize
+        document.getElementById('info-panel').addEventListener('scroll', () => {
+            const active = document.querySelector('.criteria-item.active');
+            if (active) drawLine(active.id.split('-')[1]);
+        });
+
+        window.addEventListener('resize', () => {
+            const active = document.querySelector('.criteria-item.active');
+            if (active) drawLine(active.id.split('-')[1]);
+        });
 
         window.onload = init;
     </script>
