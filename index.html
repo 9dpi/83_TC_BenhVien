@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIÊU CHÍ CHẤT LƯỢNG - BỆNH VIỆN VIỆT NAM</title>
+    <title>BIỂN BẢNG - QUY TRÌNH ĐÁNH GIÁ</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -45,7 +45,6 @@
             z-index: 50;
         }
 
-        /* STYLE PROGRESS BAR CHO MENU CẤP 1 */
         .header-center {
             position: absolute;
             left: 50%;
@@ -127,7 +126,6 @@
             padding: 20px;
         }
 
-        /* SIDEBAR STYLE CHUẨN ĐẸP CỦA BẠN */
         .chap-box {
             padding: 14px 18px;
             border-radius: 10px;
@@ -152,11 +150,6 @@
             border-left-color: var(--primary);
         }
 
-        .status-icon {
-            font-size: 14px;
-            margin-top: 2px;
-        }
-
         .content-panel {
             overflow-y: auto;
             padding: 40px;
@@ -165,32 +158,38 @@
             flex-direction: column;
         }
 
-        /* BỎ BORDER BOTTOM GIỮA CÁC ROW NHƯ Ý BẠN */
-        .criteria-row {
-            padding-bottom: 50px;
-            margin-bottom: 20px;
+        /* CẤU TRÚC ĐIỂM SỐ VÀ TIÊU ĐỀ */
+        .stats-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 3px solid #1e293b;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        .evaluation-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .stats-container {
             display: flex;
-            justify-content: flex-end;
             gap: 60px;
-            margin-bottom: 5px;
             flex-shrink: 0;
         }
 
         .stat-item {
-            border-bottom: 3px solid #1e293b;
-            padding-bottom: 10px;
-            min-width: 140px;
             text-align: right;
+            min-width: 120px;
         }
 
-        .stat-item h3 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin: 0;
-            line-height: 1;
+        .criteria-row {
+            padding-bottom: 50px;
+            margin-bottom: 20px;
         }
 
         .level-entry {
@@ -298,12 +297,11 @@
                     class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center font-black text-2xl text-white">
                     83</div>
                 <div>
-                    <h1 class="text-xl font-black uppercase text-white leading-none">TIÊU CHÍ CHẤT LƯỢNG</h1>
+                    <h1 class="text-xl font-black uppercase text-white leading-none">QUY TRÌNH ĐÁNH GIÁ</h1>
                     <p class="text-[10px] text-blue-500 font-bold tracking-[0.2em] mt-1 uppercase">BỆNH VIỆN VIỆT NAM
                     </p>
                 </div>
             </div>
-
             <div class="header-center">
                 <div class="progress-container">
                     <div class="progress-line"></div>
@@ -313,17 +311,16 @@
                     </div>
                     <div class="progress-step" id="step-2" onclick="switchView('review')">
                         <div class="step-circle">2</div>
-                        <div class="step-label">Review kết quả</div>
+                        <div class="step-label">Review</div>
                     </div>
                     <div class="progress-step" id="step-3" onclick="exportToExcel()">
                         <div class="step-circle"><i class="fas fa-file-export"></i></div>
-                        <div class="step-label">Xuất báo cáo</div>
+                        <div class="step-label">Báo cáo</div>
                     </div>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="text-right">
+            <div class="flex items-center gap-4 text-right">
+                <div>
                     <p class="text-sm font-black text-white">Vũ Quang Cường</p>
                     <p class="text-xs text-blue-500 font-bold">0912 580018</p>
                 </div>
@@ -337,18 +334,21 @@
             <div id="chapter-list"></div>
         </aside>
         <main class="content-panel">
-            <div class="stats-container">
-                <div class="stat-item">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase">Tổng</p>
-                    <h3 id="stat-count">0</h3>
-                </div>
-                <div class="stat-item" style="border-color: var(--success);">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase">Đạt</p>
-                    <h3 id="stat-done" class="text-emerald-500">0</h3>
-                </div>
-                <div class="stat-item" style="border-color: var(--primary);">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase">Tỷ lệ (%)</p>
-                    <h3 id="stat-percent" class="text-blue-500">0%</h3>
+            <div class="stats-wrapper">
+                <div class="evaluation-title">ĐÁNH GIÁ MỤC BIỂN BẢNG</div>
+                <div class="stats-container" id="stats-area">
+                    <div class="stat-item">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tổng mục</p>
+                        <h3 id="stat-count" class="text-3xl font-black">0</h3>
+                    </div>
+                    <div class="stat-item">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Đạt</p>
+                        <h3 id="stat-done" class="text-3xl font-black text-emerald-500">0</h3>
+                    </div>
+                    <div class="stat-item">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tỷ lệ</p>
+                        <h3 id="stat-percent" class="text-3xl font-black text-blue-500">0%</h3>
+                    </div>
                 </div>
             </div>
             <div id="main-content"></div>
@@ -393,16 +393,14 @@
             listEl.innerHTML = chapters.map((c) => {
                 const itemsInChap = signageData.filter(d => d.chapter === c);
                 let statusIcon = "";
-                const chapterScores = itemsInChap.map((l, i) => {
+                const chapterScores = itemsInChap.map((l) => {
                     const originalIndex = signageData.findIndex(item => item === l);
-                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + originalIndex)));
-                    return savedState[uid];
+                    return savedState[btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + originalIndex)))];
                 });
-
                 if (chapterScores.some(v => v !== undefined)) {
                     statusIcon = chapterScores.every(v => v === true)
-                        ? `<i class="fas fa-check-circle text-emerald-500 status-icon"></i>`
-                        : `<i class="fas fa-exclamation-circle text-amber-500 status-icon"></i>`;
+                        ? `<i class="fas fa-check-circle text-emerald-500 text-sm"></i>`
+                        : `<i class="fas fa-exclamation-circle text-amber-500 text-sm"></i>`;
                 }
                 return `<div class="chap-box ${c === activeChap ? 'active' : ''}" data-chapname="${c}" onclick="changeChap('${c}', this)"><div>${c}</div>${statusIcon}</div>`;
             }).join('');
@@ -425,7 +423,7 @@
                     return savedState[uid] === false || (savedNotes[uid] && savedNotes[uid].length > 0);
                 });
                 if (items.length === 0) {
-                    container.innerHTML = `<div class="text-center py-20 text-slate-500 font-bold">Không có mục lỗi cần Review.</div>`;
+                    container.innerHTML = `<div class="text-center py-20 text-slate-500 font-bold uppercase tracking-widest">Không có tiêu chí tồn tại cần Review.</div>`;
                     return;
                 }
             }
@@ -458,8 +456,8 @@
                                         <p class="text-[10px] text-blue-500 font-black uppercase mb-3 tracking-widest">Phương pháp & Bằng chứng</p>
                                         <p class="text-[14px] text-slate-400 italic leading-relaxed">${l.method.replace(/\n/g, '<br>')}</p>
                                     </div>
-                                    <div class="expand-content ${status === false ? 'open' : ''}" id="note-wrap-${uid}">
-                                        <textarea class="note-input" oninput="saveNote('${uid}', this.value)" placeholder="Nhập lý do chưa đạt...">${savedNotes[uid] || ''}</textarea>
+                                    <div class="expand-content ${status === false || (savedNotes[uid] && savedNotes[uid].length > 0) ? 'open' : ''}">
+                                        <textarea class="note-input" oninput="saveNote('${uid}', this.value)" placeholder="Nhập thực trạng tại đây...">${savedNotes[uid] || ''}</textarea>
                                     </div>
                                 </div>
                             </div>`;
@@ -497,17 +495,25 @@
 
             const auditData = signageData.map((l, i) => {
                 const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)));
-                return { "Mã": l.code, "Mức": l.level, "Nội dung": l.detail.replace(/\s+/g, ' '), "Kết quả": savedState[uid] === true ? "ĐẠT" : (savedState[uid] === false ? "CHƯA ĐẠT" : "TRỐNG"), "Thực trạng": savedNotes[uid] || "" };
+                const status = savedState[uid];
+                return { "Mã": l.code, "Mức": l.level, "Nội dung": l.detail.replace(/\s+/g, ' ').trim(), "Kết quả": status === true ? "ĐẠT" : (status === false ? "CHƯA ĐẠT" : "TRỐNG"), "Thực trạng": (savedNotes[uid] || "").trim() };
             });
 
             const wb = XLSX.utils.book_new();
-            const ws1 = XLSX.utils.json_to_sheet(auditData);
-            XLSX.utils.book_append_sheet(wb, ws1, "Full_Report");
-            const ws2 = XLSX.utils.json_to_sheet(auditData.filter(d => d["Kết quả"] === "CHƯA ĐẠT"));
-            XLSX.utils.book_append_sheet(wb, ws2, "Failed_Items");
-            XLSX.writeFile(wb, `Audit_Bảng_Biển_${new Date().toLocaleDateString()}.xlsx`);
-        }
+            const summaryData = [
+                { "Hạng mục": "TỔNG SỐ TIÊU CHÍ", "Số lượng": signageData.length },
+                { "Hạng mục": "ĐẠT", "Số lượng": Object.values(savedState).filter(v => v === true).length },
+                { "Hạng mục": "CHƯA ĐẠT", "Số lượng": Object.values(savedState).filter(v => v === false).length },
+                {}
+            ];
+            const ws1 = XLSX.utils.json_to_sheet(summaryData);
+            XLSX.utils.sheet_add_json(ws1, auditData, { origin: "A6" });
+            XLSX.utils.book_append_sheet(wb, ws1, "Bao-Cao-Audit");
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(auditData.filter(d => d["Kết quả"] === "CHƯA ĐẠT")), "DanhMuc-TonTai");
 
+            ws1['!cols'] = [{ wch: 15 }, { wch: 10 }, { wch: 80 }, { wch: 20 }, { wch: 50 }];
+            XLSX.writeFile(wb, `Audit_Biển_Bảng_${new Date().toLocaleDateString('vi-VN')}.xlsx`);
+        }
         window.onload = init;
     </script>
 </body>
