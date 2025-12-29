@@ -440,7 +440,7 @@
                 const c = grouped[code];
                 return `<div class="criteria-row">
                     <span class="bg-blue-600/10 text-blue-500 text-[11px] font-black px-3 py-1 rounded uppercase mb-4 inline-block tracking-widest">${code}</span>
-                    <h2 class="text-2xl font-black text-white uppercase mb-8">${c.name.replace(code, '').trim()}</h2>
+                    <h2 class="text-2xl text-white uppercase mb-8">${c.name.replace(code, '').trim()}</h2>
                     <div class="space-y-12">
                         ${c.levels.map((l) => {
                     const originalIndex = signageData.findIndex(item => item === l);
