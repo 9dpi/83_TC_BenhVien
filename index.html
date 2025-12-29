@@ -4,144 +4,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>83 Tiêu chí BYT - Portal Vũ Quang Cường</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>83 Tiêu chí BYT - Tọa độ Chuẩn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --bg: #030712;
+            --bg: #020617;
             --primary: #3b82f6;
+            --accent: #10b981;
         }
 
         body {
             background: var(--bg);
-            color: #f8fafc;
+            color: #f1f5f9;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             margin: 0;
         }
 
+        /* HEADER: Menu cấp 1 (Tọa độ A2, A21, A35, A70, A81) */
         header {
-            height: 75px;
             background: rgba(0, 0, 0, 0.9);
             border-bottom: 1px solid #1e293b;
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
+            padding: 10px 20px;
             z-index: 1000;
-            position: relative;
-            justify-content: space-between;
-            backdrop-filter: blur(10px);
         }
 
-        /* Mega Menu Cấp 1 (Lấy từ Cột A) */
-        .mega-nav {
+        .section-nav {
             display: flex;
-            gap: 12px;
-            height: 100%;
-            align-items: center;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .nav-item {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 0 15px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #94a3b8;
-            transition: 0.3s;
-            white-space: nowrap;
-        }
-
-        .nav-item:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Mega Content (Cấp 2 - Cột B & Cấp 3 - Cột C,D) */
-        .mega-content {
-            position: fixed;
-            top: 75px;
-            left: 0;
-            width: 100vw;
-            background: #0f172a;
-            border-bottom: 3px solid var(--primary);
-            display: none;
-            grid-template-columns: repeat(4, 1fr);
-            padding: 40px;
-            gap: 30px;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
-            z-index: 999;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .nav-item:hover .mega-content {
-            display: grid;
-        }
-
-        .mega-chapter-col {
-            min-width: 0;
-        }
-
-        .mega-chapter-title {
-            font-size: 10px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 8px;
-            text-transform: uppercase;
-            font-weight: 900;
-            line-height: 1.4;
-        }
-
-        .mega-item {
-            font-size: 10px;
-            padding: 8px 0;
-            color: #64748b;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            line-height: 1.5;
-            transition: 0.2s;
-            cursor: pointer;
-            display: flex;
+            flex-wrap: wrap;
             gap: 8px;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
-        .mega-item b {
+        .section-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 900;
             color: #94a3b8;
-            min-width: 35px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
         }
 
-        .mega-item:hover {
-            color: var(--primary);
-            background: rgba(59, 130, 246, 0.08);
-            padding-left: 10px;
+        .section-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
 
-        .main-container {
+        /* Menu cấp 2 (Chương) dàn hàng ngang (Flex-wrap) */
+        .chapter-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            min-height: 30px;
+        }
+
+        .chapter-btn {
+            font-size: 9px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: #64748b;
+            background: transparent;
+            border: 1px dashed #334155;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chapter-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* SIDEBAR: Accordion mượt mà */
+        .main-portal {
             display: grid;
-            grid-template-columns: 500px 1fr;
-            height: calc(100vh - 75px);
+            grid-template-columns: 420px 1fr;
+            height: calc(100vh - 110px);
         }
 
-        #info-panel {
-            background: #0b1120;
+        #sidebar {
+            background: #070a13;
             border-right: 1px solid #1e293b;
-            padding: 35px;
             overflow-y: auto;
+            padding: 15px;
         }
 
-        #hospital-frame {
-            position: relative;
-            background: #000;
+        .criteria-item {
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .criteria-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .criteria-header:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .criteria-item.active {
+            border-left-color: var(--primary);
+            background: rgba(59, 130, 246, 0.03);
+        }
+
+        .criteria-item.active .criteria-body {
+            max-height: 400px;
+            padding: 15px;
+            opacity: 1;
+        }
+
+        .criteria-body {
+            max-height: 0;
             overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s ease;
+            background: #020617;
+        }
+
+        /* MAP & DYNAMIC LINE */
+        #map-area {
+            position: relative;
+            background: radial-gradient(circle, #111827 0%, #000 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -149,75 +148,80 @@
 
         .hotspot {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            border: 4px solid #fff;
+            border: 3px solid #fff;
             transform: translate(-50%, -50%);
             cursor: pointer;
-            z-index: 500;
-            animation: pulse-mega 2.5s infinite;
-            background: var(--primary);
+            z-index: 100;
+            transition: 0.4s;
         }
 
-        @keyframes pulse-mega {
+        .hotspot.glow {
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+            scale: 1.4;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0px rgba(59, 130, 246, 0.7);
+                box-shadow: 0 0 0 0px rgba(16, 185, 129, 0.7);
             }
 
             100% {
-                box-shadow: 0 0 0 45px rgba(59, 130, 246, 0);
+                box-shadow: 0 0 0 25px rgba(16, 185, 129, 0);
             }
         }
 
-        .contact-info {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(15, 23, 42, 0.9);
-            padding: 15px 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            backdrop-filter: blur(10px);
+        #svg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        #path-line {
+            stroke: var(--primary);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 6, 4;
+            opacity: 0.6;
+        }
+
+        .detail-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
         }
     </style>
 </head>
 
 <body>
+    <svg id="svg-overlay">
+        <path id="path-line" d=""></path>
+    </svg>
+
     <header>
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-black">83</div>
-            <div>
-                <h1 class="text-xs font-black uppercase text-white leading-none">Chất lượng Bệnh viện</h1>
-                <p class="text-[9px] text-blue-500 font-bold uppercase tracking-widest mt-1">Vũ Quang Cường Portal</p>
-            </div>
-        </div>
-        <nav class="mega-nav" id="mega-nav-container"></nav>
-        <div class="text-right">
-            <p class="text-[8px] opacity-40 font-black uppercase">AVG Hệ thống</p><span id="total-avg"
-                class="text-2xl font-black text-blue-500">4.00</span>
-        </div>
+        <div id="section-nav" class="section-nav"></div>
+        <div id="chapter-nav" class="chapter-nav"></div>
     </header>
 
-    <div class="main-container">
-        <aside id="info-panel">
-            <div id="welcome" class="text-center py-48 opacity-10"><i class="fas fa-sitemap text-8xl mb-6"></i>
-                <p class="text-xs font-black uppercase tracking-widest text-white">Đang đồng bộ Menu từ Sheets...</p>
-            </div>
-            <div id="appendix-view" class="hidden">
-                <div id="appendix-content"></div>
-            </div>
-        </aside>
-        <main id="hospital-frame">
-            <div id="layout-wrapper" class="relative">
-                <img src="./images/layout_Tang1.png" id="hospital-map" class="max-h-[80vh] object-contain">
+    <div class="main-portal">
+        <aside id="sidebar"></aside>
+        <main id="map-area">
+            <div class="relative">
+                <img src="./images/layout_Tang1.png" class="max-h-[80vh] w-auto" id="main-map">
                 <div id="hotspot-container"></div>
             </div>
-            <div class="contact-info">
-                <p class="text-[10px] text-blue-500 font-black uppercase tracking-widest mb-1">Chuyên gia Quản lý Chất
-                    lượng</p>
-                <p class="text-[14px] font-black text-white">Vũ Quang Cường</p>
-                <p class="text-[12px] text-slate-400">0912.580.018</p>
+            <div class="absolute bottom-6 right-8 text-right">
+                <p class="text-[9px] font-black text-blue-500 uppercase tracking-widest">Vũ Quang Cường Portal</p>
+                <p class="text-[11px] text-slate-400 font-bold">0912.580.018</p>
             </div>
         </main>
     </div>
@@ -230,80 +234,118 @@
             try {
                 const res = await fetch(API_URL);
                 masterData = await res.json();
-                renderMegaMenu(masterData.menu);
-                renderHotspots(masterData.rooms);
-                document.getElementById('welcome').innerHTML = `<p class="text-[10px] uppercase font-bold text-blue-500">Đã nạp danh mục tiêu chí</p>`;
-            } catch (e) {
-                console.error(e);
-                document.getElementById('welcome').innerHTML = `<p class="text-red-500 font-bold uppercase">Lỗi kết nối dữ liệu!</p>`;
-            }
+                renderUI();
+                renderHotspots();
+            } catch (e) { console.error("Sync Error", e); }
         }
 
-        function renderMegaMenu(menu) {
-            const nav = document.getElementById('mega-nav-container');
-            const sections = [...new Set(menu.map(item => item.section))]; // Cột A
+        function renderUI() {
+            const secNav = document.getElementById('section-nav');
+            // Tọa độ A2, A21, A35, A70, A81
+            const sections = [...new Set(masterData.menu.map(m => m.section))];
+            secNav.innerHTML = sections.map((sec, i) => `
+                <button class="section-btn ${i === 0 ? 'active' : ''}" onclick="changeSection('${sec}', this)">${sec}</button>
+            `).join('');
+            changeSection(sections[0], secNav.children[0]);
+        }
 
-            nav.innerHTML = sections.map(secName => {
-                const secId = secName.split('.')[0].replace(/\s/g, '');
-                return `<div class="nav-item">${secName}<div class="mega-content" id="mega-${secId}"></div></div>`;
-            }).join('');
+        function changeSection(secName, btn) {
+            document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-            sections.forEach(secName => {
-                const secId = secName.split('.')[0].replace(/\s/g, '');
-                const megaBox = document.getElementById(`mega-${secId}`);
-                const criteriaInSection = menu.filter(m => m.section === secName);
-                const chapters = [...new Set(criteriaInSection.map(m => m.chapter))]; // Cột B
+            const chapNav = document.getElementById('chapter-nav');
+            const chapters = [...new Set(masterData.menu.filter(m => m.section === secName).map(m => m.chapter))];
+            chapNav.innerHTML = chapters.map((chap, i) => `
+                <button class="chapter-btn ${i === 0 ? 'active' : ''}" onclick="changeChapter('${chap}', this)">${chap}</button>
+            `).join('');
+            changeChapter(chapters[0], chapNav.children[0]);
+        }
 
-                megaBox.innerHTML = chapters.map(chapName => {
-                    const items = criteriaInSection.filter(m => m.chapter === chapName);
-                    return `
-                        <div class="mega-chapter-col">
-                            <h4 class="mega-chapter-title">${chapName}</h4>
-                            <div class="item-list">
-                                ${items.map(it => `
-                                    <div class="mega-item" onclick="handleItemClick('${it.code}')">
-                                        <b>${it.code}</b> <span>${it.name}</span> </div>
-                                `).join('')}
+        function changeChapter(chapName, btn) {
+            document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const sidebar = document.getElementById('sidebar');
+            const criteria = masterData.menu.filter(m => m.chapter === chapName);
+            sidebar.innerHTML = criteria.map(it => `
+                <div class="criteria-item" id="card-${it.code}">
+                    <div class="criteria-header" onclick="toggleItem('${it.code}')">
+                        <b class="w-10">${it.code}</b><span class="flex-1">${it.name}</span>
+                    </div>
+                    <div class="criteria-body">
+                        <div class="detail-box">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="bg-blue-600/20 text-blue-400 px-2 py-0.5 rounded text-[9px] font-bold">MỨC ĐẠT</span>
+                                <span class="text-3xl font-black text-white" id="val-level-${it.code}">-</span>
                             </div>
-                        </div>`;
-                }).join('');
-            });
+                            <div class="text-[11px] space-y-4">
+                                <div><b class="text-blue-500 uppercase block mb-1">Thực trạng:</b><p class="text-slate-300 italic" id="val-desc-${it.code}">...</p></div>
+                                <div><b class="text-blue-500 uppercase block mb-1">Giải trình:</b><p class="text-slate-400" id="val-reason-${it.code}">...</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function handleItemClick(code) {
-            const roomId = Object.keys(masterData.rooms).find(r => masterData.rooms[r].standards.some(st => st.code === code));
-            if (roomId) selectCriterion(roomId, code);
-            else alert("Tiêu chí " + code + " chưa được chấm điểm.");
-        }
-
-        function renderHotspots(rooms) {
+        function renderHotspots() {
             const container = document.getElementById('hotspot-container');
-            container.innerHTML = "";
-            for (let id in rooms) {
-                const room = rooms[id];
+            for (let id in masterData.rooms) {
+                const r = masterData.rooms[id];
                 const dot = document.createElement('div');
                 dot.className = 'hotspot';
-                dot.style.left = room.posX + "%"; dot.style.top = room.posY + "%";
-                dot.onclick = () => selectCriterion(id, room.standards[0].code);
+                dot.style.cssText = `left:${r.posX}%; top:${r.posY}%; background:#3b82f6;`;
+                dot.id = `hot-${id}`;
+                dot.onclick = () => {
+                    const firstCode = r.standards[0].code;
+                    toggleItem(firstCode);
+                };
                 container.appendChild(dot);
             }
         }
 
-        function selectCriterion(roomId, code) {
-            const s = masterData.rooms[roomId].standards.find(st => st.code === code);
-            document.getElementById('welcome').classList.add('hidden');
-            document.getElementById('appendix-view').classList.remove('hidden');
-            document.getElementById('appendix-content').innerHTML = `
-                <div class="bg-blue-600/20 p-6 rounded-2xl mb-6 border border-blue-500/30">
-                    <p class="text-[10px] font-black text-blue-400 uppercase mb-1">Mã số: ${s.code}</p>
-                    <h2 class="text-4xl font-black text-white">MỨC ${s.level}</h2>
-                </div>
-                <h3 class="text-white font-bold text-sm mb-8 uppercase leading-tight">${s.name}</h3>
-                <div class="space-y-6 text-[12px]">
-                    <p><b class="text-blue-500 block mb-1 uppercase">Thực trạng đánh giá:</b> <span class="text-slate-200 italic">${s.desc || 'N/A'}</span></p>
-                    <p><b class="text-blue-500 block mb-1 uppercase">Giải trình xếp mức:</b> <span class="text-slate-400">${s.reason || 'N/A'}</span></p>
-                </div>`;
+        function toggleItem(code) {
+            const allItems = document.querySelectorAll('.criteria-item');
+            const current = document.getElementById(`card-${code}`);
+            const isActive = current.classList.contains('active');
+
+            allItems.forEach(i => i.classList.remove('active'));
+            if (!isActive) {
+                current.classList.add('active');
+
+                // Tìm dữ liệu phòng
+                const roomId = Object.keys(masterData.rooms).find(r =>
+                    masterData.rooms[r].standards.some(st => st.code === code)
+                );
+
+                if (roomId) {
+                    const s = masterData.rooms[roomId].standards.find(st => st.code === code);
+                    document.getElementById(`val-level-${code}`).innerText = s.level;
+                    document.getElementById(`val-desc-${code}`).innerText = s.desc;
+                    document.getElementById(`val-reason-${code}`).innerText = s.reason;
+                    highlightMap(roomId, current);
+                }
+            }
         }
+
+        function highlightMap(roomId, sidebarEl) {
+            document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('glow'));
+            const dot = document.getElementById(`hot-${roomId}`);
+            if (dot) {
+                dot.classList.add('glow');
+                connect(sidebarEl, dot);
+            }
+        }
+
+        function connect(el1, el2) {
+            const line = document.getElementById('path-line');
+            const r1 = el1.getBoundingClientRect();
+            const r2 = el2.getBoundingClientRect();
+            const x1 = r1.right - 10; const y1 = r1.top + (r1.height / 2);
+            const x2 = r2.left + (r2.width / 2); const y2 = r2.top + (r2.height / 2);
+            line.setAttribute('d', `M ${x1} ${y1} Q ${x1 + 150} ${y1}, ${x2} ${y2}`);
+        }
+
         window.onload = init;
     </script>
 </body>
