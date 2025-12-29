@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIÊU CHÍ CHẤT LƯỢNG - BỆNH VIỆT NAM</title>
+    <title>TIÊU CHÍ CHẤT LƯỢNG - BỆNH VIỆN VIỆT NAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -15,7 +15,7 @@
             --panel: #0f172a;
             --primary: #3b82f6;
             --success: #10b981;
-            --warning: #f59e0b;
+            --danger: #ef4444;
         }
 
         body {
@@ -45,44 +45,73 @@
             z-index: 50;
         }
 
+        /* STYLE PROGRESS BAR CHO MENU CẤP 1 */
         .header-center {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
+            width: 500px;
         }
 
-        .menu-primary {
+        .progress-container {
             display: flex;
-            gap: 40px;
-            justify-content: center;
-            margin-bottom: 8px;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
         }
 
-        .menu-item {
-            font-size: 15px;
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #1e293b;
+            z-index: 1;
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 2px solid #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            color: #475569;
+        }
+
+        .step-label {
+            font-size: 10px;
             font-weight: 800;
             color: #475569;
-            cursor: pointer;
             text-transform: uppercase;
-            transition: 0.3s;
-            position: relative;
-            padding-bottom: 8px;
             letter-spacing: 1px;
         }
 
-        .menu-item.active {
-            color: var(--primary);
+        .progress-step.active .step-circle {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
         }
 
-        .menu-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
+        .progress-step.active .step-label {
+            color: var(--primary);
         }
 
         .main-container {
@@ -98,7 +127,7 @@
             padding: 20px;
         }
 
-        /* SIDEBAR CHƯƠNG */
+        /* SIDEBAR STYLE CHUẨN ĐẸP CỦA BẠN */
         .chap-box {
             padding: 14px 18px;
             border-radius: 10px;
@@ -109,10 +138,12 @@
             transition: 0.2s;
             margin-bottom: 8px;
             border-left: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: start;
+            gap: 15px;
+            line-height: 1.5;
+            white-space: normal;
         }
 
         .chap-box.active {
@@ -121,8 +152,9 @@
             border-left-color: var(--primary);
         }
 
-        .status-badge {
+        .status-icon {
             font-size: 14px;
+            margin-top: 2px;
         }
 
         .content-panel {
@@ -133,14 +165,10 @@
             flex-direction: column;
         }
 
+        /* BỎ BORDER BOTTOM GIỮA CÁC ROW NHƯ Ý BẠN */
         .criteria-row {
-            border-bottom: 2px solid #1e293b;
             padding-bottom: 50px;
-            margin-bottom: 50px;
-        }
-
-        .criteria-row:last-child {
-            border-bottom: none;
+            margin-bottom: 20px;
         }
 
         .stats-container {
@@ -167,7 +195,7 @@
 
         .level-entry {
             display: grid;
-            grid-template-columns: 140px 1fr;
+            grid-template-columns: 160px 1fr;
             gap: 40px;
             padding: 35px;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -177,30 +205,52 @@
             align-items: start;
         }
 
-        .expand-trigger {
-            color: var(--primary);
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
+        .vote-control {
             display: flex;
+            flex-direction: column;
+            gap: 15px;
             align-items: center;
-            gap: 8px;
-            margin-top: 25px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding-right: 30px;
+        }
+
+        .btn-vote {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #334155;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 10px;
+            font-weight: 900;
+            text-align: center;
+            color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+        }
+
+        .btn-vote.active-dat {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .btn-vote.active-chua {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
         }
 
         .expand-content {
             max-height: 0;
             overflow: hidden;
-            transition: all 0.3s ease-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
         }
 
         .expand-content.open {
-            max-height: 300px;
+            max-height: 400px;
             opacity: 1;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .method-box {
@@ -212,31 +262,14 @@
 
         .note-input {
             background: #020617;
-            border: 1px solid #334155;
+            border: 2px solid #3b82f6;
             border-radius: 10px;
             padding: 18px;
             color: #f1f5f9;
             font-size: 15px;
             width: 100%;
-            min-height: 100px;
-        }
-
-        .check-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 3px solid #334155;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            margin-bottom: 10px;
-        }
-
-        .check-circle.checked {
-            background: var(--success);
-            border-color: var(--success);
+            min-height: 120px;
+            outline: none;
         }
 
         #loading-overlay {
@@ -248,7 +281,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease-out;
         }
     </style>
 </head>
@@ -256,7 +288,7 @@
 <body>
     <div id="loading-overlay">
         <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-6"></div>
-        <div class="text-white font-black tracking-[0.2em] text-sm uppercase">Đang nạp dữ liệu tiêu chí...</div>
+        <div class="text-white font-black tracking-[0.2em] text-sm uppercase">Đang khởi tạo...</div>
     </div>
 
     <header>
@@ -271,25 +303,29 @@
                     </p>
                 </div>
             </div>
+
             <div class="header-center">
-                <nav class="menu-primary">
-                    <div class="menu-item active">BIỂN BẢNG</div>
-                </nav>
-            </div>
-            <div class="flex items-center gap-8">
-                <div class="text-right border-r border-slate-800 pr-8">
-                    <p class="text-[10px] text-slate-500 font-black mb-1 uppercase">PHIÊN BẢN 2.0</p>
-                    <p class="text-[8px] text-slate-600 max-w-[280px] leading-tight text-justify">Ban hành kèm theo
-                        Quyết định số 6858/QĐ-BYT - Ngày 18/11/2016 của Bộ trưởng Bộ Y tế</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button
-                        class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-[11px] font-black transition-all"
-                        onclick="exportToExcel()">EXPORT</button>
-                    <div class="text-right">
-                        <p class="text-sm font-black text-white">Vũ Quang Cường</p>
-                        <p class="text-xs text-blue-500 font-bold"><i class="fas fa-phone-alt mr-1"></i> 0912 580018</p>
+                <div class="progress-container">
+                    <div class="progress-line"></div>
+                    <div class="progress-step active" id="step-1" onclick="switchView('evaluate')">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Đánh giá</div>
                     </div>
+                    <div class="progress-step" id="step-2" onclick="switchView('review')">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Review kết quả</div>
+                    </div>
+                    <div class="progress-step" id="step-3" onclick="exportToExcel()">
+                        <div class="step-circle"><i class="fas fa-file-export"></i></div>
+                        <div class="step-label">Xuất báo cáo</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <p class="text-sm font-black text-white">Vũ Quang Cường</p>
+                    <p class="text-xs text-blue-500 font-bold">0912 580018</p>
                 </div>
             </div>
         </div>
@@ -303,15 +339,15 @@
         <main class="content-panel">
             <div class="stats-container">
                 <div class="stat-item">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Tổng đầu mục</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Tổng</p>
                     <h3 id="stat-count">0</h3>
                 </div>
                 <div class="stat-item" style="border-color: var(--success);">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Đã đạt</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Đạt</p>
                     <h3 id="stat-done" class="text-emerald-500">0</h3>
                 </div>
                 <div class="stat-item" style="border-color: var(--primary);">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Tỷ lệ (%)</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Tỷ lệ (%)</p>
                     <h3 id="stat-percent" class="text-blue-500">0%</h3>
                 </div>
             </div>
@@ -324,6 +360,7 @@
         let signageData = [];
         let savedState = JSON.parse(localStorage.getItem('bbScoresV5')) || {};
         let savedNotes = JSON.parse(localStorage.getItem('bbNotesV5')) || {};
+        let currentView = 'evaluate';
 
         async function init() {
             const loader = document.getElementById('loading-overlay');
@@ -333,52 +370,41 @@
                 const data = await res.json();
                 signageData = data.signage;
                 renderChapters();
-                const first = [...new Set(signageData.map(d => d.chapter))][0];
-                renderPage(first);
+                switchView('evaluate');
             } catch (e) { console.error(e); }
-            finally {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.display = 'none'; }, 500);
-            }
+            finally { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; }, 500); }
         }
 
-        // --- CẢI TIẾN SIDEBAR HIỂN THỊ TRẠNG THÁI ---
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
+            if (view === 'evaluate') document.getElementById('step-1').classList.add('active');
+            if (view === 'review') document.getElementById('step-2').classList.add('active');
+            const activeChap = document.querySelector('.chap-box.active')?.dataset.chapname || [...new Set(signageData.map(d => d.chapter))][0];
+            renderPage(activeChap);
+            renderChapters();
+        }
+
         function renderChapters() {
             const chapters = [...new Set(signageData.map(d => d.chapter))];
             const listEl = document.getElementById('chapter-list');
-            const activeChapter = document.querySelector('.chap-box.active')?.innerText || chapters[0];
+            const activeChap = document.querySelector('.chap-box.active')?.dataset.chapname || chapters[0];
 
             listEl.innerHTML = chapters.map((c) => {
-                // Lọc dữ liệu thuộc chương này
                 const itemsInChap = signageData.filter(d => d.chapter === c);
                 let statusIcon = "";
-
-                // Kiểm tra trạng thái dựa trên bộ nhớ
                 const chapterScores = itemsInChap.map((l, i) => {
-                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)));
+                    const originalIndex = signageData.findIndex(item => item === l);
+                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + originalIndex)));
                     return savedState[uid];
                 });
 
-                const totalInChap = chapterScores.length;
-                const doneInChap = chapterScores.filter(v => v !== undefined).length;
-                const reachedInChap = chapterScores.filter(v => v === true).length;
-
-                if (doneInChap > 0) {
-                    if (reachedInChap === totalInChap) {
-                        // Toàn bộ đạt
-                        statusIcon = `<i class="fas fa-check-circle text-emerald-500 status-badge"></i>`;
-                    } else {
-                        // Có tiêu chí không đạt hoặc chưa hoàn thành toàn bộ Đạt
-                        statusIcon = `<i class="fas fa-exclamation-circle text-amber-500 status-badge"></i>`;
-                    }
+                if (chapterScores.some(v => v !== undefined)) {
+                    statusIcon = chapterScores.every(v => v === true)
+                        ? `<i class="fas fa-check-circle text-emerald-500 status-icon"></i>`
+                        : `<i class="fas fa-exclamation-circle text-amber-500 status-icon"></i>`;
                 }
-
-                return `
-                    <div class="chap-box ${c === activeChapter ? 'active' : ''}" onclick="changeChap('${c}', this)">
-                        <span class="truncate">${c}</span>
-                        ${statusIcon}
-                    </div>
-                `;
+                return `<div class="chap-box ${c === activeChap ? 'active' : ''}" data-chapname="${c}" onclick="changeChap('${c}', this)"><div>${c}</div>${statusIcon}</div>`;
             }).join('');
         }
 
@@ -390,7 +416,20 @@
 
         function renderPage(chapterName) {
             const container = document.getElementById('main-content');
-            const items = signageData.filter(d => d.chapter === chapterName);
+            let items = signageData.filter(d => d.chapter === chapterName);
+
+            if (currentView === 'review') {
+                items = items.filter(l => {
+                    const originalIndex = signageData.findIndex(item => item === l);
+                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + originalIndex)));
+                    return savedState[uid] === false || (savedNotes[uid] && savedNotes[uid].length > 0);
+                });
+                if (items.length === 0) {
+                    container.innerHTML = `<div class="text-center py-20 text-slate-500 font-bold">Không có mục lỗi cần Review.</div>`;
+                    return;
+                }
+            }
+
             const grouped = items.reduce((acc, curr) => {
                 if (!acc[curr.code]) acc[curr.code] = { name: curr.name, levels: [] };
                 acc[curr.code].levels.push(curr);
@@ -403,16 +442,15 @@
                     <span class="bg-blue-600/10 text-blue-500 text-[11px] font-black px-3 py-1 rounded uppercase mb-4 inline-block tracking-widest">${code}</span>
                     <h2 class="text-2xl font-black text-white uppercase mb-8">${c.name.replace(code, '').trim()}</h2>
                     <div class="space-y-12">
-                        ${c.levels.map((l, i) => {
-                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)));
-                    const isChecked = savedState[uid] ? 'checked' : '';
+                        ${c.levels.map((l) => {
+                    const originalIndex = signageData.findIndex(item => item === l);
+                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + originalIndex)));
+                    const status = savedState[uid];
                     return `<div class="level-entry">
-                                <div class="flex flex-col items-center border-r border-white/5 pr-10">
-                                    <div class="text-[12px] font-black text-blue-400 mb-6 uppercase tracking-widest">${l.level}</div>
-                                    <div class="check-circle ${isChecked}" id="chk-${uid}" onclick="toggle('${uid}')">
-                                        <i class="fas fa-check text-white text-xs ${isChecked ? '' : 'hidden'}"></i>
-                                    </div>
-                                    <p class="text-[9px] mt-4 font-black text-slate-500 uppercase">${isChecked ? 'ĐẠT' : 'CHƯA ĐẠT'}</p>
+                                <div class="vote-control">
+                                    <div class="text-[12px] font-black text-blue-400 mb-2 uppercase tracking-widest">${l.level}</div>
+                                    <div class="btn-vote ${status === true ? 'active-dat' : ''}" onclick="updateVote('${uid}', true)">Đạt</div>
+                                    <div class="btn-vote ${status === false ? 'active-chua' : ''}" onclick="updateVote('${uid}', false)">Chưa đạt</div>
                                 </div>
                                 <div>
                                     <p class="text-[18px] font-bold text-white mb-6 leading-relaxed">${l.detail}</p>
@@ -420,9 +458,8 @@
                                         <p class="text-[10px] text-blue-500 font-black uppercase mb-3 tracking-widest">Phương pháp & Bằng chứng</p>
                                         <p class="text-[14px] text-slate-400 italic leading-relaxed">${l.method.replace(/\n/g, '<br>')}</p>
                                     </div>
-                                    <div class="expand-trigger" onclick="toggleNote('${uid}')"><i class="fas fa-plus-circle"></i> Lý do chưa đạt / Thực trạng cụ thể</div>
-                                    <div class="expand-content" id="note-wrap-${uid}">
-                                        <textarea class="note-input" oninput="saveNote('${uid}', this.value)" placeholder="Nhập lý do hoặc thực trạng...">${savedNotes[uid] || ''}</textarea>
+                                    <div class="expand-content ${status === false ? 'open' : ''}" id="note-wrap-${uid}">
+                                        <textarea class="note-input" oninput="saveNote('${uid}', this.value)" placeholder="Nhập lý do chưa đạt...">${savedNotes[uid] || ''}</textarea>
                                     </div>
                                 </div>
                             </div>`;
@@ -433,23 +470,18 @@
             updateStats();
         }
 
-        function toggle(uid) {
-            savedState[uid] = !savedState[uid];
+        function updateVote(uid, isSuccess) {
+            if (savedState[uid] === isSuccess) delete savedState[uid];
+            else savedState[uid] = isSuccess;
             localStorage.setItem('bbScoresV5', JSON.stringify(savedState));
-            const btn = document.getElementById(`chk-${uid}`);
-            btn.classList.toggle('checked');
-            btn.querySelector('i').classList.toggle('hidden');
-            btn.nextElementSibling.innerText = savedState[uid] ? 'ĐẠT' : 'CHƯA ĐẠT';
-            updateStats();
-            renderChapters(); // Cập nhật lại icon Sidebar khi chấm điểm
+            renderPage(document.querySelector('.chap-box.active').dataset.chapname);
+            renderChapters();
         }
 
         function saveNote(uid, val) {
             savedNotes[uid] = val;
             localStorage.setItem('bbNotesV5', JSON.stringify(savedNotes));
         }
-
-        function toggleNote(uid) { document.getElementById(`note-wrap-${uid}`).classList.toggle('open'); }
 
         function updateStats() {
             const total = signageData.length;
@@ -460,14 +492,20 @@
         }
 
         function exportToExcel() {
-            const data = signageData.map((l, i) => {
+            const missing = signageData.filter((l, i) => savedState[btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)))] === undefined);
+            if (missing.length > 0 && !confirm(`Còn ${missing.length} mục chưa chấm. Vẫn xuất file?`)) return;
+
+            const auditData = signageData.map((l, i) => {
                 const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)));
-                return { "Mức": l.level, "Nội dung": l.detail, "Kết quả": savedState[uid] ? "ĐẠT" : "CHƯA ĐẠT", "Ghi chú": savedNotes[uid] || "" };
+                return { "Mã": l.code, "Mức": l.level, "Nội dung": l.detail.replace(/\s+/g, ' '), "Kết quả": savedState[uid] === true ? "ĐẠT" : (savedState[uid] === false ? "CHƯA ĐẠT" : "TRỐNG"), "Thực trạng": savedNotes[uid] || "" };
             });
-            const ws = XLSX.utils.json_to_sheet(data);
+
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "BaoCao");
-            XLSX.writeFile(wb, "Bao_Cao_Audit.xlsx");
+            const ws1 = XLSX.utils.json_to_sheet(auditData);
+            XLSX.utils.book_append_sheet(wb, ws1, "Full_Report");
+            const ws2 = XLSX.utils.json_to_sheet(auditData.filter(d => d["Kết quả"] === "CHƯA ĐẠT"));
+            XLSX.utils.book_append_sheet(wb, ws2, "Failed_Items");
+            XLSX.writeFile(wb, `Audit_Bảng_Biển_${new Date().toLocaleDateString()}.xlsx`);
         }
 
         window.onload = init;
