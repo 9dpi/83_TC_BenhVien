@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIÊU CHÍ CHẤT LƯỢNG - BỆNH VIỆN VIỆT NAM</title>
+    <title>TIÊU CHÍ CHẤT LƯỢNG - BỆNH VIỆT NAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -15,6 +15,7 @@
             --panel: #0f172a;
             --primary: #3b82f6;
             --success: #10b981;
+            --warning: #f59e0b;
         }
 
         body {
@@ -97,6 +98,7 @@
             padding: 20px;
         }
 
+        /* SIDEBAR CHƯƠNG */
         .chap-box {
             padding: 14px 18px;
             border-radius: 10px;
@@ -107,12 +109,20 @@
             transition: 0.2s;
             margin-bottom: 8px;
             border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .chap-box.active {
             background: rgba(59, 130, 246, 0.1);
             color: var(--primary);
             border-left-color: var(--primary);
+        }
+
+        .status-badge {
+            font-size: 14px;
         }
 
         .content-panel {
@@ -228,10 +238,27 @@
             background: var(--success);
             border-color: var(--success);
         }
+
+        #loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
     </style>
 </head>
 
 <body>
+    <div id="loading-overlay">
+        <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-6"></div>
+        <div class="text-white font-black tracking-[0.2em] text-sm uppercase">Đang nạp dữ liệu tiêu chí...</div>
+    </div>
+
     <header>
         <div class="max-w-full mx-auto h-full flex items-center justify-between px-10 relative">
             <div class="flex items-center gap-5">
@@ -247,14 +274,13 @@
             <div class="header-center">
                 <nav class="menu-primary">
                     <div class="menu-item active">BIỂN BẢNG</div>
-                    <div class="menu-item" onclick="location.href='anninh.html'">AN NINH</div>
                 </nav>
             </div>
             <div class="flex items-center gap-8">
                 <div class="text-right border-r border-slate-800 pr-8">
                     <p class="text-[10px] text-slate-500 font-black mb-1 uppercase">PHIÊN BẢN 2.0</p>
                     <p class="text-[8px] text-slate-600 max-w-[280px] leading-tight text-justify">Ban hành kèm theo
-                        Quyết định số 6858/QĐ-BYT - Ngày 18 tháng 11 năm 2016 của Bộ trưởng Bộ Y tế</p>
+                        Quyết định số 6858/QĐ-BYT - Ngày 18/11/2016 của Bộ trưởng Bộ Y tế</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <button
@@ -300,6 +326,8 @@
         let savedNotes = JSON.parse(localStorage.getItem('bbNotesV5')) || {};
 
         async function init() {
+            const loader = document.getElementById('loading-overlay');
+            loader.style.display = 'flex';
             try {
                 const res = await fetch(WEB_APP_URL);
                 const data = await res.json();
@@ -308,13 +336,50 @@
                 const first = [...new Set(signageData.map(d => d.chapter))][0];
                 renderPage(first);
             } catch (e) { console.error(e); }
+            finally {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 500);
+            }
         }
 
+        // --- CẢI TIẾN SIDEBAR HIỂN THỊ TRẠNG THÁI ---
         function renderChapters() {
             const chapters = [...new Set(signageData.map(d => d.chapter))];
-            document.getElementById('chapter-list').innerHTML = chapters.map((c, i) => `
-                <div class="chap-box ${i === 0 ? 'active' : ''}" onclick="changeChap('${c}', this)">${c}</div>
-            `).join('');
+            const listEl = document.getElementById('chapter-list');
+            const activeChapter = document.querySelector('.chap-box.active')?.innerText || chapters[0];
+
+            listEl.innerHTML = chapters.map((c) => {
+                // Lọc dữ liệu thuộc chương này
+                const itemsInChap = signageData.filter(d => d.chapter === c);
+                let statusIcon = "";
+
+                // Kiểm tra trạng thái dựa trên bộ nhớ
+                const chapterScores = itemsInChap.map((l, i) => {
+                    const uid = btoa(unescape(encodeURIComponent(l.code + l.detail.substring(0, 30) + i)));
+                    return savedState[uid];
+                });
+
+                const totalInChap = chapterScores.length;
+                const doneInChap = chapterScores.filter(v => v !== undefined).length;
+                const reachedInChap = chapterScores.filter(v => v === true).length;
+
+                if (doneInChap > 0) {
+                    if (reachedInChap === totalInChap) {
+                        // Toàn bộ đạt
+                        statusIcon = `<i class="fas fa-check-circle text-emerald-500 status-badge"></i>`;
+                    } else {
+                        // Có tiêu chí không đạt hoặc chưa hoàn thành toàn bộ Đạt
+                        statusIcon = `<i class="fas fa-exclamation-circle text-amber-500 status-badge"></i>`;
+                    }
+                }
+
+                return `
+                    <div class="chap-box ${c === activeChapter ? 'active' : ''}" onclick="changeChap('${c}', this)">
+                        <span class="truncate">${c}</span>
+                        ${statusIcon}
+                    </div>
+                `;
+            }).join('');
         }
 
         function changeChap(name, el) {
@@ -376,6 +441,7 @@
             btn.querySelector('i').classList.toggle('hidden');
             btn.nextElementSibling.innerText = savedState[uid] ? 'ĐẠT' : 'CHƯA ĐẠT';
             updateStats();
+            renderChapters(); // Cập nhật lại icon Sidebar khi chấm điểm
         }
 
         function saveNote(uid, val) {
@@ -387,7 +453,7 @@
 
         function updateStats() {
             const total = signageData.length;
-            const done = Object.values(savedState).filter(v => v).length;
+            const done = Object.values(savedState).filter(v => v === true).length;
             document.getElementById('stat-done').innerText = done;
             document.getElementById('stat-percent').innerText = (Math.round((done / total) * 100) || 0) + "%";
             document.getElementById('stat-count').innerText = total;
